@@ -1,14 +1,10 @@
 ---
-- name: Update and Upgrade
-  hosts: your_target_host
-  become: yes
-  tasks:
-    - name: Update APT package cache
-      apt:
-        update_cache: yes
-      become: yes
+- hosts: all
 
-    - name: Upgrade all packages
+  become: true
+
+  tasks:
+    - name: APT Package Updater
       apt:
-        upgrade: dist
-      become: yes
+        upgrade: yes
+        update_cache: yes
