@@ -1,19 +1,14 @@
-- name: test
-  hosts: localhost
-  gather_facts: no
+---
+- name: Update and Upgrade
+  hosts: your_target_host
+  become: yes
   tasks:
-    - name: use ansible to find path to ansible.cfg
-      shell: "ansible --version | awk -F '= ' '/config file/{print $2}'"
-      register: version_dump
-      failed_when:
-        - version_dump.stdout_lines | length != 1
-        - version_dump.stderr_lines | length != 0
+    - name: Update APT package cache
+      apt:
+        update_cache: yes
+      become: yes
 
-    - name: set a fact we can use
-      set_fact:
-        ansible_cfg: "{{ version_dump.stdout }}"
-
-
-    - name: show the value
-      debug:
-        var: ansible_cfg
+    - name: Upgrade all packages
+      apt:
+        upgrade: dist
+      become: yes
